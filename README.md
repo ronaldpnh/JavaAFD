@@ -1,2 +1,12 @@
 # JavaAFD
-Estudo e tentativa de implementação de autômatos finitos determinísticos em Java para a disciplina de Linguagens Formais, Autômatos e Computabilidade, curso de Ciência da Computação - Universidade Federal do Pará (UFPA).
+### Autômatos Finitos Determinísticos em Java
+
+Para compilar e executar, vá para o diretótio dos arquivos e digite:
+
+```javac Automatos.java```
+
+```java Automatos <nome_do_arquivo_txt>```
+
+Exemplo com um dos arquivos já existentes:
+
+``` java Automatos exemplo.txt```
