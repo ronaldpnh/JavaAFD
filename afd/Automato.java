@@ -9,24 +9,40 @@ import java.util.Scanner;
 
 public class Automato {
 	public static void main(String[] args) {
-        if (args.length > 0){
+
+        // args[0] == <arquivo.txt>
+        // args[1] == <palavra>
+
+        if (args.length == 2){
+
             AFD automato = new AFD();
     	    /* Criação do arquivo para leitura */
     	    try {
                 FileReader arq = new FileReader(args[0]);
-                // Lê o arquivo atribui ao objeto
-                automato.readFile(arq);
+                
+                automato.readFile(arq);      // Lê os parametros atribui ao objeto
+                automato.getRules(args[0]); // Lê as regras de transição e atribui
 
             } catch(IOException e) {
                 System.err.printf("%s\n", e);
             }
 
-            automato.printAll();
+            //automato.printAll();    // Imprime todos os parametros 
+            //automato.printRules(); // Imprime as regras de transição
+
+            /*String estado = "qf";
+            char simbolo = 'a';
+            System.out.printf("Processamento:: (%s, %c) = %s\n", 
+                estado, simbolo, automato.process(estado, simbolo));*/
+
+            if(automato.startProcess(args[1]) == true) 
+                System.out.println("\n"+automato.startProcess(args[1])+" -> Palavra ACEITA");
+            else
+                System.out.println("\n"+automato.startProcess(args[1])+" -> Palavra NÃO ACEITA");
 
         } else {
-            System.out.println("Requer um arquivo txt.");
-            System.out.println("Tente: java Automato <nome-do-arquivo>");
+            System.err.println("Requer um arquivo txt e uma palavra pra processar.");
+            System.err.printf("Tente: java Automato <nome-do-arquivo> <palavra>\n", args[0]);
         }
-
     }
 }

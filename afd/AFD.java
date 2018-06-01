@@ -21,12 +21,18 @@ public class AFD {
 	private static String einicial;   // estado inicial
 	private static String[] efinais;  // conjunto de estados finais
 
-	//public AFD(){}
+	//getters
+	public String[] getEstados(){ return this.estados; }
+	public char[] getSimbolos(){ return this. simbolos; }
+	public char getRegChar(){ return this.regc; }
+	public String[][] getRegras(){ return this.regras; }
+	public String getEstadoInicial(){ return this.einicial; }
+	public String[] getEstadosFinais(){ return this.efinais; }
 
 	/*
 	 * Imprime parâmetros do AFD na tela */
 	public void printAll(){
-		System.out.println("AFD:");
+		System.out.println("AFD:---------------------------------------:");
 
 		System.out.printf("Conjunto de estados : { ");
 		for (String s : estados)
@@ -46,13 +52,6 @@ public class AFD {
 		System.out.println("}\n");
 	}
 
-	//getters
-	public String[] getEstados(){ return this.estados; }
-	public char[] getSimbolos(){ return this. simbolos; }
-	public char getRegChar(){ return this.regc; }
-	public String[][] getRegras(){ return this.regras; }
-	public String getEstadoInicial(){ return this.einicial; }
-	public String[] getEstadosFinais(){ return this.efinais; }
 
 	/*
 	 * Interpretar os dados de um arquivo txt e atribuir os valores as
@@ -108,6 +107,7 @@ public class AFD {
 		linha1 = "";
 		efinais = aux.split(",");
 	}
+
 
 
 	/* Usando um método da classe TransitionRule
@@ -176,10 +176,9 @@ public class AFD {
 
 		// Mostra as transições que foram criadas
 		for (int i=0; i < regs.length; i++){
-			System.out.printf("[%s, %s -> %s] Criado!\n", 
+			System.out.printf("[%s, %s -> %s] criada!\n", 
 				matriz[i][0], matriz[i][1], matriz[i][2]);
 		}
-
 		regras = matriz;
 	}
 
@@ -188,15 +187,80 @@ public class AFD {
 	 * Recebe o estado inicial e um caractere
 	 * Retorna o estado final do processamento, se existir processamento */
 	public static String process(String ei, char c){
-		String target = "";
+		String target = null;
+
+		/* Checar se a string e o carctere estão na mesma linha de alguma regra 
+		 * e retornar o terceiro elemento dessa linha que é o estado alvo */
+		
+		for (int i=0; i < regras.length; i++){
+			if (regras[i][0].equals(ei) && (regras[i][1].charAt(0) == c)){
+				target = regras[i][2];
+				break;
+			}
+		}
 		return target;
 	}
 
 
-	/* Método recebe uma lista de regras de transição, uma string e
-	 * retorna se a string é aceita a partir das regras de transição passadas */
-	private static boolean startProcess(List<TransitionRule> regras, String palavra){
-		return true;
+	/* Método recebe o estado inicial e uma string e retorna se a string é aceita a partir
+	 * das regras de transição do objeto AFD que o chamou */
+	public static boolean startProcess(String palavra){
+		
+		boolean result = false;
+		String curr = einicial; // current (estado atual)
+		
+		/* chama método process() usando e retirando sempre a
+		 * primeira letra da palavra até que a mesma seja nula */
+		System.out.printf("-----------------------------------------\n");
+		System.out.printf("Starting processing of \"%s\"...\n", palavra);
+
+		if (palavra.length() == 0){
+			/* ... */
+		} else {
+			// processa usando estado atual e a primeira letra da palavra
+			System.out.printf("Processando >> (%s, %s) ", curr, palavra);
+			if(palavra.length() > 0){
+				curr = process(curr, palavra.charAt(0));
+				System.out.printf("= %s\n", curr);
+			}
+			if (curr == null){
+				result = false;
+			} else {
+				if (palavra.length() > 0)
+					startProcessState(curr, palavra.substring(1, palavra.length()));
+			}
+		}
+		return result;
+	}
+
+	private static boolean startProcessState(String curr, String palavra){
+		boolean result = false;
+
+		if (palavra.length() == 0){
+			System.out.printf("Checando estado final %s ... \n", curr);
+			System.out.printf("Estados finais = { ");
+			for (String s : efinais){
+				System.out.printf("%s ", s);
+				if (curr.compareTo(s) == 1)
+					result = true;
+			}
+			System.out.println(" }");
+		} else {
+			// processa usando estado atual e a primeira letra da palavra
+			System.out.printf("Processando >> (%s, %s) ", curr, palavra);
+			if (palavra.length() > 0){
+				curr = process(curr, palavra.charAt(0));
+				System.out.printf("= %s\n", curr);
+			}
+			if (curr == null){
+				result = false;
+			} else {
+				if (palavra.length() > 0)
+					startProcessState(curr, palavra.substring(1, palavra.length()));
+			}
+
+		}
+		return result;
 	}
 
 }
