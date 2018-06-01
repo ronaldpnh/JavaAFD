@@ -30,15 +30,9 @@ public class Automato {
             //automato.printAll();    // Imprime todos os parametros 
             //automato.printRules(); // Imprime as regras de transição
 
-            /*String estado = "qf";
-            char simbolo = 'a';
-            System.out.printf("Processamento:: (%s, %c) = %s\n", 
-                estado, simbolo, automato.process(estado, simbolo));*/
 
-            if(automato.startProcess(args[1]) == true) 
-                System.out.println("\n"+automato.startProcess(args[1])+" -> Palavra ACEITA");
-            else
-                System.out.println("\n"+automato.startProcess(args[1])+" -> Palavra NÃO ACEITA");
+            if(automato.startProcess(args[1]) == true) System.out.println("\nPalavra ACEITA");
+            else System.out.println("\nPalavra NÃO ACEITA");
 
         } else {
             System.err.println("Requer um arquivo txt e uma palavra pra processar.");

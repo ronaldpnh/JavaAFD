@@ -212,22 +212,25 @@ public class AFD {
 		/* chama método process() usando e retirando sempre a
 		 * primeira letra da palavra até que a mesma seja nula */
 		System.out.printf("-----------------------------------------\n");
-		System.out.printf("Starting processing of \"%s\"...\n", palavra);
+		System.out.printf("Iniciando processamento de \"%s\"...\n", palavra);
 
 		if (palavra.length() == 0){
-			/* ... */
+
 		} else {
 			// processa usando estado atual e a primeira letra da palavra
-			System.out.printf("Processando >> (%s, %s) ", curr, palavra);
+			
 			if(palavra.length() > 0){
+				System.out.printf("Processando >> (%s, %s) ", curr, palavra);
 				curr = process(curr, palavra.charAt(0));
 				System.out.printf("= %s\n", curr);
 			}
 			if (curr == null){
 				result = false;
 			} else {
+				/* se o tamanho da palavra for maior que zero, executa processamento
+				 * da palavra sem a primeira letra */
 				if (palavra.length() > 0)
-					startProcessState(curr, palavra.substring(1, palavra.length()));
+					result = startProcessState(curr, palavra.substring(1, palavra.length()));
 			}
 		}
 		return result;
@@ -238,13 +241,14 @@ public class AFD {
 
 		if (palavra.length() == 0){
 			System.out.printf("Checando estado final %s ... \n", curr);
-			System.out.printf("Estados finais = { ");
+
+			/* Percorre o vetor de estados finais, testando se o estado atual 
+			 * está contido nele */
+
 			for (String s : efinais){
-				System.out.printf("%s ", s);
-				if (curr.compareTo(s) == 1)
-					result = true;
+				if (curr.compareTo(s) == 0) result = true;
 			}
-			System.out.println(" }");
+
 		} else {
 			// processa usando estado atual e a primeira letra da palavra
 			System.out.printf("Processando >> (%s, %s) ", curr, palavra);
@@ -252,11 +256,11 @@ public class AFD {
 				curr = process(curr, palavra.charAt(0));
 				System.out.printf("= %s\n", curr);
 			}
-			if (curr == null){
+			if (curr == ""){
 				result = false;
 			} else {
 				if (palavra.length() > 0)
-					startProcessState(curr, palavra.substring(1, palavra.length()));
+					result = startProcessState(curr, palavra.substring(1, palavra.length()));
 			}
 
 		}
