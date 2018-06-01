@@ -2,6 +2,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.lang.String;
+import java.util.ArrayList;
 /* 
  * Estudo e tentativa de implementação de autômatos finitos determinísticos em Java
  * para a disciplina de Linguagens Formais, Autômatos e Computabilidade
@@ -12,11 +13,12 @@ import java.lang.String;
 
 public class AFD {
 
-	public static String[] estados;
-	public static char[] simbolos;
-	public static char regtran;
-	public static String einicial;
-	public static String[] efinais;
+	private static String[] estados;
+	private static char[] simbolos;
+	private static char regtran;
+	private static ArrayList<TransitionRule> regras;
+	private static String einicial;
+	private static String[] efinais;
 
 	//public AFD(){}
 
@@ -25,30 +27,30 @@ public class AFD {
 	public static void printAll(){
 		System.out.println("AFD:");
 
-		System.out.printf("Conjunto de estados: { ");
+		System.out.printf("Conjunto de estados : { ");
 		for (String s : estados)
 			System.out.printf("%s ", s);
-		System.out.printf("}\n");
+		System.out.println("}");
 
-		System.out.printf("Conjunto de sḿbolos: { ");
+		System.out.printf("Conjunto de símbolos: { ");
 		for (char c : simbolos)
 			System.out.printf("%c ", c);
-		System.out.printf("}\n");
+		System.out.println("}");
 
-		System.out.printf("Regras de transição: %c\n", regtran);
-		System.out.printf("Estado inicial: %s\n", einicial);
-		System.out.printf("Estados finais: { ");
+		System.out.printf("Regras de transição : %c\n", regtran);
+		System.out.printf("Estado inicial      : %s\n", einicial);
+		System.out.printf("Estados finais      : { ");
 		for (String s : efinais)
 			System.out.printf("%s ", s);
-		System.out.println("}\n");
+		System.out.println("}");
 	}
 
 
 	/*
-	 * Interpretar os dados de um arquivo txt e atribuir os valores aos
-	 * respectivos vetores.
+	 * Interpretar os dados de um arquivo txt e atribuir os valores as
+	 * respectivas variaveis/vetores.
 	 */
-	public static void readFromFile(FileReader file){
+	public static void readFile(FileReader file){
 		String linha="", linha1="", aux;
 
 		try {
@@ -89,12 +91,37 @@ public class AFD {
 		einicial = linha1.substring(0, linha1.indexOf(","));
 		linha1 = linha1.replace(einicial+",", "");
 
-		/* Pegando o conjunto de estados finais*/
-		aux = linha1.substring(linha1.indexOf("{")+1, linha1.indexOf("}"));
+		/* Pegando o conjunto de estados finais
+		 * Remove as '{}' se houver... Testa se a primeira letra da string é '{'*/
+		if (linha1.startsWith("{"))
+			aux = linha1.substring(linha1.indexOf("{")+1, linha1.indexOf("}"));
+		else
+			aux = linha1;
+		linha1 = "";
 		efinais = aux.split(",");
+	}//endOf readFromFile()
 
-		System.out.println(aux);
 
+	/* Usando um método da classe TransitionRule
+	 * Lê as regras escritas em um arquivo txt, recebe o nome do arquivo */
+	public static void getRules(String filename){
+		regras = TransitionRule.getFromFile(filename);
+	}
+
+
+	/* Imprime a lista de regras de transição */
+	public static void printRules(){
+		System.out.printf("Regras de Transição: %c\n", regtran);
+		for (TransitionRule r : regras){
+			System.out.printf("- (%s, %c) = %s\n", r.getInicial(), r.getSimbolo(), r.getAlvo());
+		}
+	}
+
+
+	/* Método recebe uma lista de regras de transição, uma string e
+	 * retorna se a string é aceita a partir das regras de transição passadas */
+	private static boolean startProcess(ArrayList<TransitionRule> regras, String palavra){
+		return true;
 	}
 
 }
