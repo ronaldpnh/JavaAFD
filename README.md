@@ -1,12 +1,12 @@
 # JavaAFD
 ### Autômatos Finitos Determinísticos em Java
 
-Para compilar e executar, vá para o diretótio dos arquivos e digite:
+Para compilar e executar, no diretótio dos arquivos, digite:
 
-```javac Automatos.java```
+```javac Automato.java```
 
-```java Automatos <nome_do_arquivo_txt>```
+```java Automato <nome_do_arquivo_txt>```
 
 Exemplo com um dos arquivos já existentes:
 
-``` java Automatos exemplo.txt```
+``` java Automato exemplo.txt```
