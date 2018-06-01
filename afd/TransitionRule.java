@@ -3,6 +3,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.lang.StringBuilder;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.List;
 
 public class TransitionRule {
 
@@ -24,11 +27,11 @@ public class TransitionRule {
 
 
 	/* Lê as regras escritas em um arquivo txt */
-	public static ArrayList<TransitionRule> getFromFile(String filename){
-		ArrayList<TransitionRule> lista = new ArrayList<TransitionRule>();
-		TransitionRule nova;
+	public static String[][] getFromFile(String filename){
 		StringBuilder texto = new StringBuilder();
-		String linha; String[] aux, regs;
+		String linha;
+		String[] regs;
+		String[][] matriz;
 
 		try {
 			FileReader file = new FileReader(filename);
@@ -40,31 +43,37 @@ public class TransitionRule {
 				if(linha == null) break;
 				texto.append(linha);
 			}
-			//System.out.println(texto.toString());
+			System.out.printf("\nLendo regras de transição do arquivo...\n");
+			System.out.println(texto.toString());
 			br.close();
-
-			linha = texto.toString().replaceAll(" |\t", "");
-			linha = linha.substring(linha.indexOf("{")+1, linha.indexOf("}"));
-			
-			regs = linha.split(";");
-
-			for (String r : regs){
-				System.out.printf("Separando %s ...\n", r);
-				aux = r.split(",");
-				System.out.println(aux[0]);
-				System.out.println(aux[1]);
-				System.out.println(aux[2]);
-				//# ERRO: a lista só adiciona o último objeto em todos os indices
-				if (lista.isEmpty())
-					lista.add(new TransitionRule(aux[0], aux[1].charAt(0), aux[2]));
-				else
-					lista.add(0, new TransitionRule(aux[0], aux[1].charAt(0), aux[2]));
-			}
-
 		} catch(IOException e){
 			System.out.printf("Error: %s\n", e);
+		}	
+
+
+		/* Remove todos espaços em branco e tabulações, e pega somente o texto
+		 * entre as chaves "{:::}"... Pega as partes separadas por ";" */
+		linha = texto.toString().replaceAll(" |\t", "");
+		linha = linha.substring(linha.indexOf("{")+1, linha.indexOf("}"));
+		regs = linha.split(";");
+
+		/* Matriz armazenará as transições por linha, terá o numero de linhas
+		 * igual ao tamanho do vetor regs[] */
+		matriz = new String[regs.length][3];
+			
+		// Processo de separação e criação das regras, alocando na matriz
+		for (int i=0; i<regs.length; i++){
+			matriz[i] = regs[i].split(",");
+			System.out.printf("Criando regra de transição [%s,%s,%s]...\n", 
+				matriz[i][0], matriz[i][1], matriz[i][2]);
 		}
 
-		return lista;
-	}//endOf getFromFile.
-}
+		// Mostra as transições que foram criadas
+		for (int i=0; i < regs.length; i++){
+			System.out.printf("[%s, %s -> %s] Criado!\n", 
+				matriz[i][0], matriz[i][1], matriz[i][2]);
+		}
+
+		return matriz;
+	}
+}									

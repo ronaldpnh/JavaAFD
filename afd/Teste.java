@@ -6,14 +6,14 @@ import java.util.ArrayList;
 public class Teste {
 	public static void main(String[] args){
 
-		String filename = args[0];
+		String filename = args[0] + ".txt";
 		AFD afd = new AFD();
 
 		try {
 
 			FileReader arq = new FileReader(filename);
 			afd.readFile(arq);
-			//afd.printAll();
+			afd.printAll();
 			afd.getRules(filename);
 			afd.printRules();
 
