@@ -31,7 +31,7 @@ Nas linhas abaixo, a definição das regras de transição.
 
 - Devem estar entre chaves e separadas por ponto-e-vígula (;).
 
-- Uma egra é compsta por estado inicial, simbolo e estado-alvo, todos devem estar separados por vírgula (,)
+- Uma regra é composta por estado inicial, simbolo e estado-alvo, todos devem estar separados por vírgula (,)
 
 - Exemplo de arquivo:
 
