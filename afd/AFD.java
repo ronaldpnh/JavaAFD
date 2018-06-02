@@ -14,8 +14,8 @@ import java.util.List;
 
 public class AFD {
 
-	private static String[] estados;  // conjunto de estados
 	private static char[] simbolos;   // conjunto de simbolos
+	private static String[] estados;  // conjunto de estados
 	private static char regc;		  // caractere referente as reras de transição
 	private static String[][] regras; // conjunto de regras de transição
 	private static String einicial;   // estado inicial
@@ -32,16 +32,16 @@ public class AFD {
 	/*
 	 * Imprime parâmetros do AFD na tela */
 	public void printAll(){
-		System.out.println("AFD:---------------------------------------:");
-
-		System.out.printf("Conjunto de estados : { ");
-		for (String s : estados)
-			System.out.printf("%s ", s);
-		System.out.println("}");
+		System.out.println("AFD:----------------------------------:");
 
 		System.out.printf("Conjunto de símbolos: { ");
 		for (char c : simbolos)
 			System.out.printf("%c ", c);
+		System.out.println("}");
+
+		System.out.printf("Conjunto de estados : { ");
+		for (String s : estados)
+			System.out.printf("%s ", s);
 		System.out.println("}");
 
 		System.out.printf("Regras de transição : %c\n", regc);
@@ -71,16 +71,7 @@ public class AFD {
 		/* Remove os parenteses do inicio e fim da linha */
 		linha1 = linha1.replaceAll("[()]","").replace(" ", "");
 
-		/* Pegando o comjunto de estados:
-		 * aux recebe uma substring delimitada por duas chaves '{ aux }' 
-		 * posteriormente essa substring é separada e salva no vetor "estados" */
-		aux = linha1.substring(linha1.indexOf("{")+1, linha1.indexOf("}"));
-		estados = aux.split(",");
-		/* Retira {aux}, da linha */
-		linha1 = linha1.replaceAll(aux,"").replaceAll("\\{\\},","");
-
-		/*
-		 * Para "pegar" o conjunto de simbolos em um vetor de char[]
+		/* Para "pegar" o conjunto de simbolos em um vetor de char[]
 		 * Retira a substring entre as chaves correspondentes aos símbolos atribuindo a aux
 		 * Retira as vigulas que separam os caracteres ...
 		 * Transforma a string resultante em um vetor de char[]
@@ -89,6 +80,15 @@ public class AFD {
 		linha1 = linha1.replaceAll(aux,"").replaceAll("\\{\\},","");
 		aux = aux.replace(",","");
 		simbolos = aux.toCharArray();
+
+		/* Pegando o comjunto de estados:
+		 * aux recebe uma substring delimitada por duas chaves '{ aux }' 
+		 * posteriormente essa substring é separada e salva no vetor "estados"
+		 */
+		aux = linha1.substring(linha1.indexOf("{")+1, linha1.indexOf("}"));
+		estados = aux.split(",");
+		/* Retira {aux}, da linha */
+		linha1 = linha1.replaceAll(aux,"").replaceAll("\\{\\},","");
 		
 		/* Pegando o caractere correspondente à regra de transição */
 		regc = linha1.toCharArray()[0];
@@ -110,13 +110,13 @@ public class AFD {
 
 
 
-	/* Usando um método da classe TransitionRule
+	/* 
 	 * Lê as regras escritas em um arquivo txt, recebe o nome do arquivo */
-	public static void getRules(String filename){
-		regras = TransitionRule.getFromFile(filename);
-	}
+	//public static void getRules(String filename){
+	//	regras = TransitionRule.getFromFile(filename);
+	//}
 
-	/* Imprime uma regra de transição , no indice indicados*/
+	/* Imprime uma regra de transição , no indice indicados.*/
 	public static void printRule(int index){
 		System.out.printf("-- (%s, %s) -> %s\n", 
 			regras[index][0], regras[index][1], regras[index][2]);
@@ -124,7 +124,7 @@ public class AFD {
 
 	/* Imprime a lista de regras de transição */
 	public static void printRules(){
-		System.out.printf("Regras de transição: %c\n", regc);
+		System.out.printf("Regras de transição (%c):--------------:\n", regc);
 		for (int i=0; i < regras.length; i++){
 			System.out.printf("-- (%s, %s) -> %s\n", 
 				regras[i][0], regras[i][1], regras[i][2]);
@@ -160,7 +160,7 @@ public class AFD {
 		 * entre as chaves "{:::}"... Pega as partes separadas por ";" */
 		linha = texto.toString().replaceAll(" |\t", "");
 		System.out.println(linha);
-		linha = linha.substring(linha.indexOf("{")+1, linha.indexOf("}"));
+		//linha = linha.substring(linha.indexOf("{")+1, linha.indexOf("}"));
 		regs = linha.split(";");
 
 		/* Matriz armazenará as transições por linha, terá o numero de linhas
@@ -170,15 +170,14 @@ public class AFD {
 		// Processo de separação e criação das regras, alocando na matriz
 		for (int i=0; i<regs.length; i++){
 			matriz[i] = regs[i].split(",");
-			System.out.printf("Criando regra de transição [%s,%s,%s]...\n", 
-				matriz[i][0], matriz[i][1], matriz[i][2]);
+			//System.out.printf("Criando regra de transição [%s,%s,%s]...\n", 
+			//	matriz[i][0], matriz[i][1], matriz[i][2]);
 		}
 
 		// Mostra as transições que foram criadas
-		for (int i=0; i < regs.length; i++){
-			System.out.printf("[%s, %s -> %s] criada!\n", 
-				matriz[i][0], matriz[i][1], matriz[i][2]);
-		}
+		/*for (int i=0; i < regs.length; i++)
+			System.out.printf("[%s, %s -> %s] criada!\n", matriz[i][0], matriz[i][1], matriz[i][2]);*/
+
 		regras = matriz;
 	}
 
@@ -240,13 +239,17 @@ public class AFD {
 		boolean result = false;
 
 		if (palavra.length() == 0){
-			System.out.printf("Checando estado final %s ... \n", curr);
+			if (curr != null)
+				System.out.printf("\nChecando se %s é estado final... \n", curr);
+			else
+				result = false;
 
 			/* Percorre o vetor de estados finais, testando se o estado atual 
 			 * está contido nele */
 
 			for (String s : efinais){
-				if (curr.compareTo(s) == 0) result = true;
+				if(curr != null)
+					if (curr.compareTo(s) == 0) result = true;
 			}
 
 		} else {
