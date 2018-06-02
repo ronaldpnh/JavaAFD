@@ -109,13 +109,6 @@ public class AFD {
 	}
 
 
-
-	/* 
-	 * Lê as regras escritas em um arquivo txt, recebe o nome do arquivo */
-	//public static void getRules(String filename){
-	//	regras = TransitionRule.getFromFile(filename);
-	//}
-
 	/* Imprime uma regra de transição , no indice indicados.*/
 	public static void printRule(int index){
 		System.out.printf("-- (%s, %s) -> %s\n", 
