@@ -25,11 +25,11 @@ A primeira linha é a definição da 5-tupla (quíntupla), que deve ser um par d
 2. Conjunto de símbolos (alfabeto). Entre chaves. { }
 3. Caractere referente ao conjunto regras de transição.
 4. Estado inicial.
-5 Conjunto de estados finais. Entre chaves. { } A não ser que seja um único estado final.
+5. Conjunto de estados finais. Entre chaves. { } A não ser que seja um único estado final.
 
 Nas linhas abaixo, a definição das regras de transição.
 
-- Devem estar entre chaves e separadas por ponto-e-vígula (;).
+- Cada regra deve ser encerrada com ponto-e-vígula (;).
 
 - Uma regra é composta por estado inicial, simbolo e estado-alvo, todos devem estar separados por vírgula (,)
 
@@ -38,14 +38,12 @@ Nas linhas abaixo, a definição das regras de transição.
 ```
 ({q0, q1, q2, qf}, {a, b}, T, q0, qf)
 
-T: {
-	q0, a, q1;
-	q0, b, q2;
-	q1, a, qf;
-	q1, b, q2;
-	q2, a, q1;
-	q2, b, qf;
-	qf, a, qf;
-	qf, b, qf;
-}
+q0, a, q1;
+q0, b, q2;
+q1, a, qf;
+q1, b, q2;
+q2, a, q1;
+q2, b, qf;
+qf, a, qf;
+qf, b, qf;
 ```
